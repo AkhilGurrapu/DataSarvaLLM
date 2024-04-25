@@ -25,7 +25,7 @@ def generate_response(model, prompt, temperature, max_tokens):
     return completion.choices[0].message.content
 
 # Streamlit user interface
-st.set_page_config(page_title="DataSarva", layout="wide")
+st.set_page_config(page_title="DataSarva LLM Playground", layout="wide")
 
 # Custom CSS styling
 st.markdown(
