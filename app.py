@@ -1,17 +1,17 @@
 import streamlit as st
 
 from openai import OpenAI
-from dotenv import load_dotenv
-import os
+# from dotenv import load_dotenv
+# import os
 
 # Load environment variables
-load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
+# load_dotenv()
+# api_key = os.getenv("OPENAI_API_KEY")
 
 # Initialize the OpenAI client
 client = OpenAI(
     base_url="https://integrate.api.nvidia.com/v1",
-    api_key=api_key
+    api_key= "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"
 )
 
 def generate_response(model, prompt, temperature, max_tokens):
