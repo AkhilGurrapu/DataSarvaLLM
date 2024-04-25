@@ -59,7 +59,7 @@ col1, col2, col3 = st.columns([2, 2, 1])
 with col3:
     # st.image("DataSarva.png", width=100)
     st.title("DataSarva")
-    st.write("Developed by Akhil Gurrapu", link="https://linkedin.com/in/akhilgurrapu")
+    st.write("Developed by Akhil Gurrapu")
     
 
 # Divide the page into columns
@@ -89,3 +89,5 @@ if submit_button and prompt:
     with st.spinner("Generating response..."):
         response = generate_response(selected_model_value, prompt, temperature, max_tokens)
     st.success(response)
+
+st.markdown(f'<a href="https://linkedin.com/in/akhilgurrapu" target="_blank">My LinkedIn Profile</a>', unsafe_allow_html=True)
