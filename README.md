@@ -26,6 +26,6 @@ Each of these models represents cutting-edge advancements in AI language process
 To set up this project, clone this repository and install the required dependencies:
 
 ```bash
-git clone https://github.com/yourgithubusername/project-repository-name.git
-cd project-repository-name
+git clone https://github.com/AkhilGurrapu/DataSarvaLLM.git
+cd DataSarvaLLM
 pip install -r requirements.txt
