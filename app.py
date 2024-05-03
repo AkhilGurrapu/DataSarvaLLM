@@ -5,55 +5,37 @@ import os
 
 # Load environment variables
 load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
-
-# Initialize the OpenAI client
-client = OpenAI(
-    base_url="https://integrate.api.nvidia.com/v1",
-    api_key=api_key
-)
-
-def generate_response(model, prompt, temperature, max_tokens):
-    completion = client.chat.completions.create(
-        model=model,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=temperature,
-        max_tokens=max_tokens,
-        top_p=1,
-        stream=False
-    )
-    return completion.choices[0].message.content
 
 # Streamlit user interface
-st.set_page_config(page_title="DataSarva LLM Playground", layout="wide")
+st.set_page_config(page_title="DataSarva", layout="wide")
 
 # Custom CSS styling
 st.markdown(
     """
     <style>
-        .stTextArea label, .stSlider label {
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .stTextArea textarea, .stSlider .widget {
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
-        .stButton button {
-            font-size: 18px;
-            padding: 10px 20px;
-            border-radius: 8px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-        .stButton button:hover {
-            background-color: #0056b3;
-        }
+    .stTextArea label, .stSlider label {
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .stTextArea textarea, .stSlider .widget {
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+    .stButton button {
+        font-size: 18px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+    .stButton button:hover {
+        background-color: #0056b3;
+    }
     </style>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
 # Header
@@ -62,6 +44,35 @@ with col3:
     # st.image("DataSarva.png", width=100)
     st.title("DataSarva")
     st.write("Developed by Akhil Gurrapu")
+
+# API key input
+api_key = st.text_input("Enter your API key:", placeholder="Paste your API key here")
+st.write("To get your API key, visit: https://build.nvidia.com/explore/discover")
+
+# Initialize the OpenAI client
+if api_key:
+    try:
+        client = OpenAI(base_url="https://integrate.api.nvidia.com/v1", api_key=api_key)
+    except Exception as e:
+        st.error(f"Invalid API key: {e}")
+else:
+    client = None
+
+# Function to generate response
+def generate_response(model, prompt, temperature, max_tokens):
+    if client:
+        completion = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=temperature,
+            max_tokens=max_tokens,
+            top_p=1,
+            stream=False,
+        )
+        return completion.choices[0].message.content
+    else:
+        st.error("Please enter a valid API key.")
+        return None
 
 # Divide the page into columns
 col4, col5 = st.columns([2, 3])
@@ -88,4 +99,5 @@ with col5:
         if submit_button and prompt:
             with st.spinner("Generating response..."):
                 response = generate_response(selected_model_value, prompt, temperature, max_tokens)
-            st.success(response)
+                if response:
+                    st.success(response)
